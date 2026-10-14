@@ -31,10 +31,10 @@ Una experiencia web poética, cinematográfica e interactiva diseñada especialm
    - Botón de audio con ecualizador animado en la esquina superior derecha para pausar o reanudar.
    - Sintetizador de respaldo automático mediante Web Audio API.
 
-5. **Optimización Móvil Horizontal & Detección de Orientación**:
-   - **Prepantalla inteligente**: Si se abre desde un teléfono móvil en posición vertical, se despliega una pantalla que solicita girar el dispositivo a horizontal con animación de teléfono rotativo.
-   - Al rotar a horizontal, la pantalla se desvanece de inmediato.
-   - **Diseño horizontal ultra optimizado**: Alturas compactas, tarjetas en 3 columnas visibles simultáneamente, modal con tipografía y desplazamiento suave para pantallas cortas.
+5. **Optimización Nativa para Celulares en Vertical**:
+   - **Vista vertical fluida**: Se eliminó cualquier bloqueo de rotación para permitir abrir y disfrutar la experiencia directamente sosteniendo el teléfono de forma natural (vertical).
+   - **Escena 3D adaptativa**: La composición de planetas, sol y la silueta en el pedestal se centran armoniosamente en pantallas móviles alargadas.
+   - **Tarjetas y modal táctiles**: Menú de preguntas en lista vertical limpia y modal con desplazamiento táctil suave (*smooth touch scrolling*) y tipografía legible.
 
 ---
 

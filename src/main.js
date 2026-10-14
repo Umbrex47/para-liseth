@@ -35,88 +35,17 @@ class CosmicApp {
     this.btnNextQuestion = document.getElementById('btn-next-question');
     this.navDots = document.querySelectorAll('.nav-indicators .dot');
 
-    this.orientationOverlay = document.getElementById('orientation-overlay');
-    this.btnDismissOrientation = document.getElementById('btn-dismiss-orientation');
-    this.isOrientationDismissed = false;
-
     this.scene = document.querySelector('.scene');
 
     this.init();
   }
 
   init() {
-    this.initOrientationWatcher();
     this.generateCosmicParticles();
     this.initTypewriter();
     this.initParallax();
     this.initEventListeners();
     this.playEntranceAnimation();
-  }
-
-  /**
-   * Watches device orientation and prompts for landscape mode on phones
-   */
-  initOrientationWatcher() {
-    if (!this.orientationOverlay) return;
-
-    if (this.btnDismissOrientation) {
-      this.btnDismissOrientation.addEventListener('click', () => {
-        this.isOrientationDismissed = true;
-        gsap.to(this.orientationOverlay, {
-          opacity: 0,
-          duration: 0.3,
-          onComplete: () => {
-            this.orientationOverlay.classList.remove('is-visible');
-          }
-        });
-      });
-    }
-
-    const handler = () => this.checkOrientation();
-    window.addEventListener('resize', handler);
-    window.addEventListener('orientationchange', handler);
-    if (window.screen && window.screen.orientation) {
-      window.screen.orientation.addEventListener('change', handler);
-    }
-
-    this.checkOrientation();
-  }
-
-  isMobile() {
-    const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    const isMobileUA = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const isSmallViewport = Math.min(window.innerWidth, window.innerHeight) <= 600 ||
-                            Math.min(window.screen.width, window.screen.height) <= 850;
-    return (hasTouch && isSmallViewport) || isMobileUA;
-  }
-
-  isPortrait() {
-    if (window.matchMedia && window.matchMedia('(orientation: portrait)').matches) {
-      return true;
-    }
-    return window.innerHeight > window.innerWidth;
-  }
-
-  checkOrientation() {
-    if (!this.orientationOverlay) return;
-
-    if (this.isMobile() && this.isPortrait() && !this.isOrientationDismissed) {
-      if (!this.orientationOverlay.classList.contains('is-visible')) {
-        this.orientationOverlay.classList.add('is-visible');
-        gsap.fromTo(this.orientationOverlay, { opacity: 0 }, { opacity: 1, duration: 0.35 });
-        gsap.fromTo('.orientation-content', { scale: 0.92, y: 15 }, { scale: 1, y: 0, duration: 0.45, ease: 'back.out(1.4)' });
-      }
-    } else {
-      if (this.orientationOverlay.classList.contains('is-visible')) {
-        gsap.to(this.orientationOverlay, {
-          opacity: 0,
-          duration: 0.35,
-          onComplete: () => {
-            this.orientationOverlay.classList.remove('is-visible');
-          }
-        });
-      }
-    }
   }
 
   /**
