@@ -497,29 +497,36 @@ class CosmicApp {
   onTypingCompleted() {
     this.modalSignature.style.display = 'block';
     this.modalSignature.classList.add('is-visible');
+
+    const scrollToBottom = () => {
+      if (this.modalBody) {
+        this.modalBody.scrollTo({
+          top: this.modalBody.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    };
+
+    // Immediate autoscroll right when typing finishes
+    scrollToBottom();
+
     gsap.fromTo(
       this.modalSignature,
       { opacity: 0, y: 14 },
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.6,
         ease: 'power2.out',
-        onComplete: () => {
-          if (this.modalBody) {
-            this.modalBody.scrollTo({
-              top: this.modalBody.scrollHeight,
-              behavior: 'smooth'
-            });
-          }
-        }
+        onUpdate: () => scrollToBottom(),
+        onComplete: () => scrollToBottom()
       }
     );
 
     this.triggerStarCelebration();
 
     gsap.fromTo(this.btnNextQuestion, { scale: 1 }, {
-      scale: 1.05,
+      scale: 1.08,
       duration: 0.35,
       yoyo: true,
       repeat: 3,

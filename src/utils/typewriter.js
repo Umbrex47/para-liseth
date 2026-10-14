@@ -69,8 +69,8 @@ export class Typewriter {
       // Keystroke sound
       audio.playTypewriterKey(char);
 
-      // Auto-scroll when needed (throttled to avoid layout thrashing on every char)
-      if (this.scrollContainer && (char === ' ' || char === '\n' || this.currentCharIndex % 5 === 0)) {
+      // Auto-scroll when needed (keep newest typed text in view)
+      if (this.scrollContainer && (char === ' ' || char === '\n' || this.currentCharIndex % 4 === 0)) {
         this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
       }
 
@@ -96,6 +96,10 @@ export class Typewriter {
       // Completed current paragraph, pause before starting the next
       this.currentParagraphIndex++;
       this.currentCharIndex = 0;
+
+      if (this.scrollContainer) {
+        this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
+      }
 
       const paragraphDelay = 380;
       const timeoutId = setTimeout(() => {
@@ -134,6 +138,9 @@ export class Typewriter {
   finish() {
     this.isTyping = false;
     this.stopTimeouts();
+    if (this.scrollContainer) {
+      this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
+    }
     if (this.onComplete) {
       this.onComplete();
     }
