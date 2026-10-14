@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Liseth | Un Universo Para Ti</title>
+  <meta name="description" content="Un rincón del universo con palabras sinceras escritas desde el alma para Liseth.">
+  <meta name="theme-color" content="#101115">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='38' fill='none' stroke='%23ffffff' stroke-width='6'/></svg>">
+  <script type="module" crossorigin src="./assets/index-DKiNwQDm.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-uapzXmXK.css">
+</head>
+<body>
+  <!-- Stars Background Layers -->
+  <div class="stars"></div>
+  <div class="stars-highlights"></div>
+  <div class="planets">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div class="planets-2"></div>
+  <div class="startails"></div>
+
+  <!-- Cosmic 3D Silhouette Scene -->
+  <div class="scene-container">
+    <div class="scene">
+      <div class="sun"></div>
+      <div class="planet"></div>
+      <div class="planet-2"></div>
+      <div class="planet-3"></div>
+      <div class="planet-4"></div>
+      <div class="planet-6"></div>
+      <div class="planet-5">
+        <div class="structure-1"></div>
+        <div class="structure-2"></div>
+        <div class="structure-3"></div>
+      </div>
+
+      <!-- Human Silhouette (Looking out into space) -->
+      <div class="human">
+        <div class="neck"></div>
+        <div class="head"></div>
+        <div class="body">
+          <div class="shoulder"></div>
+          <div class="back"></div>
+          <div class="hip">
+            <div class="center"></div>
+          </div>
+        </div>
+        <div class="leg left">
+          <div class="knee"></div>
+          <div class="lower"></div>
+        </div>
+        <div class="leg right">
+          <div class="knee"></div>
+          <div class="lower"></div>
+        </div>
+        <div class="arm left">
+          <div class="hand"></div>
+        </div>
+        <div class="arm right">
+          <div class="hand"></div>
+        </div>
+      </div>
+
+      <!-- Reflection Shadow -->
+      <div class="human shadow">
+        <div class="neck"></div>
+        <div class="head"></div>
+        <div class="body">
+          <div class="shoulder"></div>
+          <div class="back"></div>
+          <div class="hip">
+            <div class="center"></div>
+          </div>
+        </div>
+        <div class="leg left">
+          <div class="knee"></div>
+          <div class="lower"></div>
+        </div>
+        <div class="leg right">
+          <div class="knee"></div>
+          <div class="lower"></div>
+        </div>
+        <div class="arm left">
+          <div class="hand"></div>
+        </div>
+        <div class="arm right">
+          <div class="hand"></div>
+        </div>
+      </div>
+
+      <!-- Pedestal Cuboid with Glowing Wireframe Outlines -->
+      <div class="cuboid">
+        <div class="top">
+          <div class="outline"></div>
+          <div class="outline"></div>
+          <div class="outline"></div>
+          <div class="outline"></div>
+        </div>
+        <div class="front"></div>
+        <div class="right"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Atmospheric Lighting & Filters -->
+  <div class="highlight"></div>
+  <div class="color-filter"></div>
+
+  <!-- SVG Filters for Procedural Star & Planetary Textures -->
+  <svg class="filter" xmlns="http://www.w3.org/2000/svg">
+    <filter id="stars">
+      <feTurbulence baseFrequency="0.275" />
+      <feColorMatrix values="0 0 0 9 -5
+                             0 0 0 9 -4
+                             0 0 0 9 -5
+                             0 0 0 0 1" />
+    </filter>
+    <filter id="stars-highlights">
+      <feTurbulence baseFrequency="0.675" />
+      <feColorMatrix values="0 0 0 9 -5
+                             0 0 0 9 -4
+                             0 0 0 9 -5
+                             0 0 0 0 1" />
+    </filter>
+    <filter id="planet-structure">
+      <feTurbulence baseFrequency="0.195" />
+      <feColorMatrix values="0 0 0 1 -9
+                             0 0 0 9 -1.5
+                             0 0 0 2 -6
+                             0 0 0 0 1" />
+    </filter>
+  </svg>
+
+  <!-- Audio Player Button & Media -->
+  <button id="audiobutton" class="audio-icon-button" aria-label="Reproducir Tel Aviv - Danny Ocean" title="Tel Aviv - Danny Ocean">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </button>
+  <audio id="audio" loop preload="auto" src="./audio/tel-aviv.mp3"></audio>
+
+  <!-- Dedication Header -->
+  <header class="liseth-header">
+    <h1 class="dedication-title">Para Liseth</h1>
+    <p class="dedication-subtitle">Un universo de pensamientos que solo tú despiertas.</p>
+  </header>
+
+  <!-- Interactive Layer: CTA & Questions Selection -->
+  <main class="interaction-layer">
+    <!-- Call to action button -->
+    <button id="btn-read" class="btn-read-responses" aria-label="Leer respuestas">
+      <span class="halo"></span>
+      <span>Leer respuestas</span>
+    </button>
+
+    <!-- Questions Panel (Revealed by GSAP) -->
+    <section id="questions-panel" class="questions-panel" aria-label="Preguntas">
+      <div class="questions-grid">
+        <!-- Question Card 1 -->
+        <article class="question-card" data-index="0" tabindex="0" role="button" aria-label="Pregunta 1">
+          <div class="q-meta">
+            <span>Capítulo 01</span>
+          </div>
+          <h2 class="q-title">¿Qué pienso cuando te veo?</h2>
+          <p class="q-preview">«Claro, es que es jodidamente maravillosa, a pesar de que me saca canas…»</p>
+          <div class="q-footer">
+            <span>Descubrir</span>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- Question Card 2 -->
+        <article class="question-card" data-index="1" tabindex="0" role="button" aria-label="Pregunta 2">
+          <div class="q-meta">
+            <span>Capítulo 02</span>
+          </div>
+          <h2 class="q-title">¿Qué pienso al escuchar tu nombre?</h2>
+          <p class="q-preview">«Basta con escucharlo para que mi atención encuentre un nuevo destino…»</p>
+          <div class="q-footer">
+            <span>Descubrir</span>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+
+        <!-- Question Card 3 -->
+        <article class="question-card" data-index="2" tabindex="0" role="button" aria-label="Pregunta 3">
+          <div class="q-meta">
+            <span>Capítulo 03</span>
+          </div>
+          <h2 class="q-title">¿Qué siento cuando pienso en ti?</h2>
+          <p class="q-preview">«Sencillamente, es la chica que quiero a mi lado…»</p>
+          <div class="q-footer">
+            <span>Descubrir</span>
+            <span class="arrow">→</span>
+          </div>
+        </article>
+      </div>
+
+      <button id="btn-hide-questions" class="btn-hide-panel" aria-label="Ocultar preguntas">
+        <span>← Ocultar preguntas y contemplar el cosmos</span>
+      </button>
+    </section>
+  </main>
+
+  <!-- Typewriter Modal Dialog -->
+  <div id="modal-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-question-title">
+    <div id="modal-dialog" class="modal-dialog">
+      <!-- Modal Header -->
+      <header class="modal-header">
+        <div id="modal-chapter" class="modal-chapter-text">
+          Capítulo I
+        </div>
+        <div class="modal-tools">
+          <button id="btn-sound-toggle" aria-label="Alternar sonido de teclas">
+            <span>Sonido</span>
+          </button>
+          <button id="btn-skip-typing" aria-label="Leer todo de una vez">
+            <span>Leer todo</span>
+          </button>
+          <button id="btn-close-modal" class="btn-close-modal" aria-label="Cerrar modal">
+            &times;
+          </button>
+        </div>
+      </header>
+
+      <!-- Modal Body: Question & Special Elite Typewriter Text -->
+      <div class="modal-body">
+        <h2 id="modal-question-title" class="question-heading">¿Qué pienso cuando te veo?</h2>
+        <div class="letter-divider"></div>
+        <div id="typewriter-text" class="typewriter-content" aria-live="polite"></div>
+
+        <!-- Signature that fades in when typing is done -->
+        <footer id="modal-signature" class="modal-signature">
+          <span id="signature-quote" class="signature-text">«Siempre tú, Liseth.»</span>
+        </footer>
+      </div>
+
+      <!-- Modal Footer Navigation -->
+      <footer class="modal-footer">
+        <button id="btn-prev-question" class="btn-nav btn-prev" disabled aria-label="Pregunta anterior">
+          <span>←</span>
+          <span>Anterior</span>
+        </button>
+
+        <div class="nav-indicators" aria-label="Indicadores de pregunta">
+          <span class="dot active" data-index="0" title="Capítulo 1"></span>
+          <span class="dot" data-index="1" title="Capítulo 2"></span>
+          <span class="dot" data-index="2" title="Capítulo 3"></span>
+        </div>
+
+        <button id="btn-next-question" class="btn-nav btn-next" aria-label="Siguiente pregunta">
+          <span>Siguiente</span>
+          <span>→</span>
+        </button>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- Application Script -->
+</body>
+</html>
