@@ -66,14 +66,7 @@ body {
     inset: 0;
     z-index: 10;
     pointer-events: none;
-    background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(5, 5, 8, 0.7) 100%);
-    mask: linear-gradient(
-      black 10%,
-      transparent 30%,
-      transparent 70%,
-      black 80%
-    );
-    backdrop-filter: blur(1vmin) invert(0);
+    background: radial-gradient(circle at 50% 50%, transparent 55%, rgba(5, 5, 8, 0.85) 100%);
   }
 }
 
@@ -101,7 +94,8 @@ svg.filter {
     filter: url(#stars) saturate(0) brightness(1.5);
     mix-blend-mode: overlay;
     opacity: 0.18;
-    animation: stars-animation 20s ease-in-out infinite;
+    will-change: opacity;
+    animation: stars-twinkle 12s ease-in-out infinite;
   }
 }
 
@@ -121,40 +115,17 @@ svg.filter {
     filter: url(#stars-highlights) saturate(0) brightness(1.5);
     mix-blend-mode: lighten;
     opacity: 0.22;
-    animation: stars-animation-2 20s ease-in-out infinite;
+    will-change: opacity;
+    animation: stars-twinkle 16s ease-in-out infinite reverse;
   }
 }
 
-@keyframes stars-animation {
-  from {
-    translate: 1vmin 2vmin;
-    rotate: 0deg;
-  }
-  30% {
-    translate: 1vmin -2vmin;
+@keyframes stars-twinkle {
+  0%, 100% {
+    opacity: 0.16;
   }
   50% {
-    translate: -1vmin 2vmin;
-    rotate: 10deg;
-  }
-  to {
-    translate: 1vmin 2vmin;
-    rotate: 0deg;
-  }
-}
-
-@keyframes stars-animation-2 {
-  from {
-    translate: 1vmin -2vmin;
-  }
-  30% {
-    translate: -1vmin -2vmin;
-  }
-  50% {
-    translate: 1vmin -2vmin;
-  }
-  to {
-    translate: 1vmin -2vmin;
+    opacity: 0.26;
   }
 }
 
@@ -221,15 +192,16 @@ svg.filter {
   place-items: center;
   pointer-events: none;
   z-index: 3;
+  animation: scene-zoom-in-out var(--time) ease-in-out infinite;
 }
 
 .scene {
   display: grid;
   place-items: center;
   position: absolute;
-  animation: scene-zoom-in-out var(--time) ease-in-out infinite;
   transform-style: preserve-3d;
   will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes scene-zoom-in-out {
@@ -1089,25 +1061,24 @@ svg.filter {
   width: 100vw;
   background: radial-gradient(
       50vmin 70vmin at 70% 70%,
-      rgba(255, 255, 255, 0.12),
-      transparent
+      rgba(255, 255, 255, 0.08),
+      transparent 70%
     ),
     radial-gradient(
       40vmin 30vmin at 70% 70%,
-      rgba(255, 255, 255, 0.12),
-      transparent
+      rgba(255, 255, 255, 0.08),
+      transparent 70%
     ),
     radial-gradient(
       40vmin 60vmin at 10% 70%,
-      rgba(255, 255, 255, 0.14),
-      transparent
+      rgba(255, 255, 255, 0.09),
+      transparent 70%
     ),
     radial-gradient(
       80vmin 100vh at 30% 70%,
-      rgba(255, 255, 255, 0.1),
-      transparent
+      rgba(255, 255, 255, 0.06),
+      transparent 70%
     );
-  filter: blur(5vmin);
   pointer-events: none;
   z-index: 4;
 }
@@ -1116,14 +1087,12 @@ svg.filter {
   position: absolute;
   height: 100vh;
   width: 100vw;
-  background: conic-gradient(
-    at 50% 60%,
-    rgb(50 56 92 / 27%),
-    rgb(152 75 132 / 7%),
-    rgb(150 75 152 / 4%),
-    rgb(50 56 92 / 27%)
+  background: radial-gradient(
+    circle at 50% 60%,
+    rgba(50, 56, 92, 0.16),
+    rgba(152, 75, 132, 0.06) 55%,
+    transparent 80%
   );
-  mix-blend-mode: color;
   pointer-events: none;
   z-index: 5;
 }
@@ -1348,6 +1317,8 @@ svg.filter {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  height: auto;
+  min-height: auto;
   text-align: left;
   backdrop-filter: blur(16px);
   cursor: pointer;
@@ -1370,6 +1341,7 @@ svg.filter {
     letter-spacing: 0.14em;
     text-transform: uppercase;
     font-weight: 500;
+    flex-shrink: 0;
   }
 
   .q-title {
@@ -1380,6 +1352,7 @@ svg.filter {
     line-height: 1.35;
     letter-spacing: 0.02em;
     transition: color 0.3s ease;
+    flex-shrink: 0;
   }
 
   .q-preview {
@@ -1391,6 +1364,8 @@ svg.filter {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    word-break: break-word;
+    flex-shrink: 0;
   }
 
   .q-footer {
@@ -1403,6 +1378,7 @@ svg.filter {
     margin-top: auto;
     padding-top: 0.4rem;
     transition: all 0.3s ease;
+    flex-shrink: 0;
 
     .arrow {
       transition: transform 0.3s ease;
@@ -1544,12 +1520,14 @@ svg.filter {
 
 /* Modal Body / Typewriter Area */
 .modal-body {
-  padding: 1.8rem 2rem;
+  padding: 1.8rem 2rem 3.2rem;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.3rem;
+  overflow-x: hidden;
+  display: block;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+  min-height: 0;
 
   /* Custom subtle scrollbar */
   &::-webkit-scrollbar {
@@ -1571,22 +1549,25 @@ svg.filter {
     line-height: 1.35;
     letter-spacing: 0.02em;
     text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.8rem;
   }
 
   .letter-divider {
     height: 1px;
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.02));
-    margin-bottom: 0.4rem;
+    margin-bottom: 1.4rem;
   }
 
   /* Typewriter Text */
   .typewriter-content {
+    display: block;
+    width: 100%;
     font-family: var(--font-typewriter);
     font-size: 1.14rem;
     line-height: 1.85;
     color: #f3eff0;
     letter-spacing: 0.02em;
-    min-height: 140px;
+    min-height: 90px;
     word-break: break-word;
     white-space: pre-wrap;
 
@@ -1609,29 +1590,24 @@ svg.filter {
     }
   }
 
-  /* Signature */
+  /* Signature - isolated block flow below typewriter text */
   .modal-signature {
-    margin-top: 1rem;
-    padding-top: 1.2rem;
-    border-top: 1px dashed rgba(255, 255, 255, 0.14);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
+    display: none;
+    width: 100%;
+    clear: both;
+    margin-top: 2.2rem;
+    padding-top: 1.4rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.16);
     opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.6s ease;
-
-    &.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
 
     .signature-text {
+      display: block;
       font-family: var(--font-serif);
       font-size: 1.05rem;
       font-style: italic;
       color: var(--color-gold);
       letter-spacing: 0.05em;
+      line-height: 1.45;
     }
   }
 }
@@ -1801,26 +1777,36 @@ svg.filter {
       padding: 1.05rem 1.15rem;
       gap: 0.45rem;
       border-radius: var(--radius-subtle);
+      height: auto;
+      min-height: auto;
 
       .q-meta {
         font-size: 0.68rem;
         letter-spacing: 0.12em;
+        flex-shrink: 0;
       }
 
       .q-title {
         font-size: 1.02rem;
         line-height: 1.35;
+        flex-shrink: 0;
       }
 
       .q-preview {
         font-size: 0.78rem;
         line-height: 1.45;
+        word-break: break-word;
+        flex-shrink: 0;
+        display: -webkit-box;
         -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
       }
 
       .q-footer {
         font-size: 0.72rem;
         padding-top: 0.25rem;
+        flex-shrink: 0;
       }
     }
 
@@ -1869,23 +1855,24 @@ svg.filter {
   }
 
   .modal-body {
-    padding: 1.3rem 1.25rem;
-    gap: 1rem;
+    padding: 1.3rem 1.25rem 3.2rem;
+    display: block;
     -webkit-overflow-scrolling: touch;
 
     .question-heading {
       font-size: 1.25rem;
       line-height: 1.35;
+      margin-bottom: 0.6rem;
     }
 
     .letter-divider {
-      margin-bottom: 0.25rem;
+      margin-bottom: 1.1rem;
     }
 
     .typewriter-content {
       font-size: 1.02rem;
       line-height: 1.75;
-      min-height: 120px;
+      min-height: 70px;
 
       p {
         margin-bottom: 1.1rem;
@@ -1893,11 +1880,15 @@ svg.filter {
     }
 
     .modal-signature {
-      margin-top: 0.8rem;
-      padding-top: 0.9rem;
+      display: none;
+      width: 100%;
+      clear: both;
+      margin-top: 1.8rem;
+      padding-top: 1.1rem;
 
       .signature-text {
         font-size: 0.95rem;
+        line-height: 1.45;
       }
     }
   }

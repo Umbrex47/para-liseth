@@ -69,8 +69,8 @@ export class Typewriter {
       // Keystroke sound
       audio.playTypewriterKey(char);
 
-      // Smooth auto-scroll if container overflows
-      if (this.scrollContainer) {
+      // Auto-scroll when needed (throttled to avoid layout thrashing on every char)
+      if (this.scrollContainer && (char === ' ' || char === '\n' || this.currentCharIndex % 5 === 0)) {
         this.scrollContainer.scrollTop = this.scrollContainer.scrollHeight;
       }
 

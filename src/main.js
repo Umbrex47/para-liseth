@@ -52,10 +52,14 @@ class CosmicApp {
    * Generates dynamic startails and planets if not already rendered
    */
   generateCosmicParticles() {
+    const isMobile = window.innerWidth <= 680;
+    const startailCount = isMobile ? 35 : 65;
+    const planetCount = isMobile ? 15 : 30;
+
     const startails = document.querySelector('.startails');
     if (startails && startails.children.length === 0) {
       const fragment = document.createDocumentFragment();
-      for (let i = 0; i < 200; i++) {
+      for (let i = 0; i < startailCount; i++) {
         const div = document.createElement('div');
         div.style.setProperty('--x', Math.random().toFixed(4));
         div.style.setProperty('--y', Math.random().toFixed(4));
@@ -70,7 +74,7 @@ class CosmicApp {
     const planets2 = document.querySelector('.planets-2');
     if (planets2 && planets2.children.length === 0) {
       const fragment = document.createDocumentFragment();
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < planetCount; i++) {
         const div = document.createElement('div');
         div.style.setProperty('--x', Math.random().toFixed(4));
         div.style.setProperty('--y', Math.random().toFixed(4));
@@ -95,24 +99,37 @@ class CosmicApp {
   }
 
   /**
-   * Soft 3D Parallax on mouse movement
+   * Soft 3D Parallax on mouse movement with requestAnimationFrame throttling
    */
   initParallax() {
     if (!this.scene) return;
 
+    let ticking = false;
+    let targetX = 0;
+    let targetY = 0;
+
+    const render = () => {
+      gsap.to(this.scene, {
+        rotateY: targetX,
+        rotateX: targetY,
+        duration: 1.2,
+        ease: 'power1.out',
+        overwrite: 'auto'
+      });
+      ticking = false;
+    };
+
     window.addEventListener('mousemove', (e) => {
       if (this.isModalOpen) return;
 
-      const normX = (e.clientX / window.innerWidth) - 0.5;
-      const normY = (e.clientY / window.innerHeight) - 0.5;
+      targetX = ((e.clientX / window.innerWidth) - 0.5) * 8;
+      targetY = -((e.clientY / window.innerHeight) - 0.5) * 6;
 
-      gsap.to(this.scene, {
-        rotateY: normX * 8,
-        rotateX: -normY * 6,
-        duration: 1.8,
-        ease: 'power1.out'
-      });
-    });
+      if (!ticking) {
+        requestAnimationFrame(render);
+        ticking = true;
+      }
+    }, { passive: true });
 
     if (window.DeviceOrientationEvent) {
       window.addEventListener('deviceorientation', (e) => {
@@ -120,13 +137,14 @@ class CosmicApp {
         const normX = Math.max(-1, Math.min(1, e.gamma / 30));
         const normY = Math.max(-1, Math.min(1, (e.beta - 40) / 30));
 
-        gsap.to(this.scene, {
-          rotateY: normX * 6,
-          rotateX: -normY * 5,
-          duration: 1.2,
-          ease: 'power1.out'
-        });
-      });
+        targetX = normX * 6;
+        targetY = -normY * 5;
+
+        if (!ticking) {
+          requestAnimationFrame(render);
+          ticking = true;
+        }
+      }, { passive: true });
     }
   }
 
@@ -362,7 +380,17 @@ class CosmicApp {
     }
     this.modalQuestionTitle.textContent = q.title;
     this.signatureQuote.textContent = q.signature;
+
+    // Reset Signature completely so it cannot be visible or occupy space while typing
+    gsap.killTweensOf(this.modalSignature);
+    this.modalSignature.style.display = 'none';
+    gsap.set(this.modalSignature, { clearProps: 'all' });
     this.modalSignature.classList.remove('is-visible');
+
+    this.typewriterText.innerHTML = '';
+    if (this.modalBody) {
+      this.modalBody.scrollTop = 0;
+    }
 
     // Update Navigation UI
     this.updateModalNavigation();
@@ -416,8 +444,17 @@ class CosmicApp {
         }
         this.modalQuestionTitle.textContent = q.title;
         this.signatureQuote.textContent = q.signature;
+
+        // Reset Signature completely
+        gsap.killTweensOf(this.modalSignature);
+        this.modalSignature.style.display = 'none';
+        gsap.set(this.modalSignature, { clearProps: 'all' });
         this.modalSignature.classList.remove('is-visible');
+
         this.typewriterText.innerHTML = '';
+        if (this.modalBody) {
+          this.modalBody.scrollTop = 0;
+        }
         this.updateModalNavigation();
 
         gsap.to('.modal-body', {
@@ -458,8 +495,26 @@ class CosmicApp {
    * Triggered when typewriter finishes writing the answer
    */
   onTypingCompleted() {
+    this.modalSignature.style.display = 'block';
     this.modalSignature.classList.add('is-visible');
-    gsap.fromTo(this.modalSignature, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' });
+    gsap.fromTo(
+      this.modalSignature,
+      { opacity: 0, y: 14 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        onComplete: () => {
+          if (this.modalBody) {
+            this.modalBody.scrollTo({
+              top: this.modalBody.scrollHeight,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+    );
 
     this.triggerStarCelebration();
 
@@ -498,6 +553,11 @@ class CosmicApp {
   closeModal() {
     this.isModalOpen = false;
     this.typewriter.stop();
+
+    gsap.killTweensOf(this.modalSignature);
+    this.modalSignature.style.display = 'none';
+    gsap.set(this.modalSignature, { clearProps: 'all' });
+    this.modalSignature.classList.remove('is-visible');
 
     const tl = gsap.timeline({
       defaults: { ease: 'power2.in' },

@@ -12,6 +12,7 @@ class AudioEngine {
     this.masterGain = null;
     this.lfo = null;
     this.audioElement = null;
+    this.cachedNoiseBuffers = null;
   }
 
   initContext() {
@@ -21,6 +22,22 @@ class AudioEngine {
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume();
+    }
+    if (!this.cachedNoiseBuffers && this.ctx) {
+      this.initNoiseBuffers();
+    }
+  }
+
+  initNoiseBuffers() {
+    this.cachedNoiseBuffers = [];
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.025); // 25ms
+    for (let b = 0; b < 4; b++) {
+      const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+      }
+      this.cachedNoiseBuffers.push(buffer);
     }
   }
 
@@ -210,16 +227,12 @@ class AudioEngine {
     }
 
     // Standard key strike: noise burst + tiny click transient
-    // 1. Noise burst
-    const bufferSize = Math.floor(this.ctx.sampleRate * 0.025); // 25ms
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+    // 1. Noise burst from pre-cached buffers
+    if (!this.cachedNoiseBuffers || this.cachedNoiseBuffers.length === 0) {
+      this.initNoiseBuffers();
     }
-
     const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
+    noise.buffer = this.cachedNoiseBuffers[Math.floor(Math.random() * this.cachedNoiseBuffers.length)];
 
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'bandpass';
