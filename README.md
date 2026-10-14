@@ -2,6 +2,8 @@
 
 Una experiencia web poética, cinematográfica e interactiva diseñada especialmente para **Liseth**. Combina una atmósfera 3D cósmica en capas, animaciones fluidas con **GSAP**, música ambiental y un modal con efecto realista de **máquina de escribir en fuente *Special Elite*** con audio mecánico táctil.
 
+🌐 **Enlace en vivo (GitHub Pages)**: [https://umbrex47.github.io/para-liseth/](https://umbrex47.github.io/para-liseth/)
+
 ---
 
 ## 💫 Características Principales
